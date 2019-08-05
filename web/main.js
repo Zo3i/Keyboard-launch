@@ -6,14 +6,20 @@
         $keys = document.querySelectorAll('#keyboard li'),
         $setting = document.querySelector('#setting'),
         $close = document.querySelector('.close'),
+        $closeSettings = document.querySelector('.closeSettings'),
+        $settings = document.querySelector('#settings'),
         $newWindow = document.querySelector('#newWindow'),
-        $searchEngine = document.querySelector('#searchEngine')
+        $searchEngine = document.querySelector('#searchEngine'),
+        $key = document.querySelector('#key'),
+        $site = document.querySelector('#site'),
+        $logo = document.querySelector('#logo')
+
 
     // init
     if (localStorage.version != version) {
         localStorage.version = version
         localStorage.newWindow = 0
-        localStorage.searchEngine = 'https://www.baidu.com/s?wd='
+        localStorage.searchEngine = 'https://www.google.com/search?q='
         localStorage[67] = 'https://www.coding.net'
         localStorage[72] = 'https://huguotao.com'
         localStorage[84] = 'https://www.taobao.com'
@@ -56,6 +62,7 @@
     }
 
     function keyDown(key) {
+      console.log(key)
         if (!key) return
         keys[key]['span'].classList.add('keyDownSpan')
         keys[key]['li'].classList.add('keyDownLi')
@@ -76,13 +83,17 @@
     }
 
     $search.onkeyup = function(e) {
-        if (e.target.value == '设置') return $setting.style.bottom = 0
+        if (e.target.value == 'set') return $setting.style.bottom = 0
         var key = e.which || e.keyCode || 0;
         if (key == 13) openUrl(localStorage.searchEngine + e.target.value)
     }
 
     $close.onclick = function() {
         $setting.style.bottom = '-320px'
+    }
+
+    $closeSettings.onclick = function() {
+        $settings.style.top = '-320px'
     }
 
     var keyCache = 0
@@ -111,13 +122,24 @@
 
     $keyboard.onclick = function(e) {
         if (e.target.tagName != 'SPAN') return
+        console.log(111)
         var name = e.target.innerText,
-            key = e.target.parentElement.dataset.key || 0,
-            url = prompt("请输入按键 " + name + " 对应的网址", localStorage[key] || '')
-        if (url === null) return
-        if (url && url.indexOf('http') != 0) url = 'http://' + url
-        localStorage[key] = url
-        location.reload()        
+            key = e.target.parentElement.dataset.key || 0
+            console.log(name);
+            console.log(key);
+            $key.value = name
+            $site.value = localStorage[key] || ''
+            // url = prompt("请输入按键 " + name + " 对应的网址", localStorage[key] || '')
+            if (localStorage[key]) {
+              $logo.value = localStorage[key] + '/favicon.ico'
+            } else {
+              $logo.value = ""
+            }
+            $settings.style.top = '0px'
+        // if (url === null) return
+        // if (url && url.indexOf('http') != 0) url = 'http://' + url
+        // localStorage[key] = url
+        // location.reload()
     }
 
     $newWindow.onclick = function() {
@@ -127,6 +149,25 @@
 
     $searchEngine.onchange = function(e) {
         localStorage.searchEngine = e.target.value
+        // change logo
+        switch (e.target.value.match(/(.*\/\/)?(www\.)?(\w*).*/)[3]) {
+          case "google":
+              $('#logo-default').css('background-image', 'url(' + window.googleLogo + ')')
+              $('#logo-default').css('-webkit-mask-image', 'url(' + window.googleLogo + ')')
+              $('#logo-default').css('background', '#eee')
+            break;
+          case "baidu":
+            $('#logo-default').css('-webkit-mask-image', 'url(' + window.baiduLogo + ')')
+            $('#logo-default').css('background-image', 'url(' + window.baiduLogo + ')')
+            $('#logo-default').css('background', '#eee')
+            break;
+          case "bing":
+            $('#logo-default').css('-webkit-mask-image', 'url(' + window.bingLogo + ')')
+            $('#logo-default').css('background-image', 'url(' + window.bingLogo + ')')
+            $('#logo-default').css('background', '#eee')
+            break;
+          default:
+
+        }
     }
 })()
-
