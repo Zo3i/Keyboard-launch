@@ -154,7 +154,7 @@
       if (url && url.indexOf('http') != 0) url = 'http://' + url
       localStorage[key] = url
       console.log(key)
-      // location.reload()
+      location.reload()
     }
 
     $newWindow.onclick = function() {
