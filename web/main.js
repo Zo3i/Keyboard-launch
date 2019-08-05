@@ -1,6 +1,8 @@
 ;(function() {
     var version = '1.0.0',
         keys = {},
+        key = "",
+        isSetting = false,
         $search = document.querySelector('#search'),
         $keyboard = document.querySelector('#keyboard'),
         $keys = document.querySelectorAll('#keyboard li'),
@@ -12,7 +14,8 @@
         $searchEngine = document.querySelector('#searchEngine'),
         $key = document.querySelector('#key'),
         $site = document.querySelector('#site'),
-        $logo = document.querySelector('#logo')
+        $logo = document.querySelector('#logo'),
+        $urlSet = document.querySelector('#urlSet')
 
 
     // init
@@ -93,6 +96,8 @@
     }
 
     $closeSettings.onclick = function() {
+        // 恢复跳转
+        isSetting = false
         $settings.style.top = '-320px'
     }
 
@@ -116,17 +121,16 @@
             url = localStorage[key]
         keyUp(key)
 
-        if (url && key == keyCache && document.activeElement != $search) openUrl(url)
+        if (url && key == keyCache && document.activeElement != $search && !isSetting) openUrl(url)
         keyCache = 0
     }
 
     $keyboard.onclick = function(e) {
         if (e.target.tagName != 'SPAN') return
-        console.log(111)
-        var name = e.target.innerText,
-            key = e.target.parentElement.dataset.key || 0
-            console.log(name);
-            console.log(key);
+        // 静止跳转
+        isSetting = true
+        var name = e.target.innerText;
+        key = e.target.parentElement.dataset.key || 0
             $key.value = name
             $site.value = localStorage[key] || ''
             // url = prompt("请输入按键 " + name + " 对应的网址", localStorage[key] || '')
@@ -140,6 +144,17 @@
         // if (url && url.indexOf('http') != 0) url = 'http://' + url
         // localStorage[key] = url
         // location.reload()
+    }
+
+    // 修改键盘对应网址
+    $urlSet.onclick = function () {
+      console.log("it's ok!")
+      var url = $site.value
+      if (url === null) return
+      if (url && url.indexOf('http') != 0) url = 'http://' + url
+      localStorage[key] = url
+      console.log(key)
+      // location.reload()
     }
 
     $newWindow.onclick = function() {
@@ -167,7 +182,6 @@
             $('#logo-default').css('background', '#eee')
             break;
           default:
-
         }
     }
 })()
