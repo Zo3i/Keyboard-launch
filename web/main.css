@@ -14,7 +14,7 @@ body {
   width: 100%;
   height: 100%;
   position: absolute;
-  background-image: url("https://source.unsplash.com/random/1300*800");
+  background-image: url("https://source.unsplash.com/random/1920*1080");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -49,13 +49,43 @@ body {
 
 /*-----------KEYBOARD-----------*/
 
-#keyboard {
+@media (min-width:768px) and (max-width:1083px) {
+  #keyboard {
+      width: 860px;
+      position: absolute;
+      bottom: 0%;
+      left: 50%;
+      margin-left: -430px;
+  }
+}
+
+@media (min-width:1084px) and (max-width:1399px) {
+  #keyboard {
+      width: 860px;
+      position: absolute;
+      bottom: 0%;
+      left: 50%;
+      margin-left: -430px;
+  }
+}
+
+@media (min-width:1400px) and (max-width:1778px) {
+  #keyboard {
+      width: 860px;
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      margin-left: -430px;
+  }
+}
+
+/* #keyboard {
     width: 860px;
     position: absolute;
     bottom: 20%;
     left: 50%;
     margin-left: -430px;
-}
+} */
 
 #keyboard ul {
     padding: 0px;
