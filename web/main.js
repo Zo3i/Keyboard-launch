@@ -54,7 +54,11 @@
     $searchEngine.value = localStorage.searchEngine
 
     function getFavicon(url) {
+      if (localStorage[url]) {
+        return localStorage[url]
+      } else {
         return url.split('/').slice(0,3).join('/') + "/favicon.ico"
+      }
     }
 
     function addFavicon($li, src) {
@@ -140,10 +144,6 @@
               $logo.value = ""
             }
             $settings.style.top = '0px'
-        // if (url === null) return
-        // if (url && url.indexOf('http') != 0) url = 'http://' + url
-        // localStorage[key] = url
-        // location.reload()
     }
 
     // 修改键盘对应网址
@@ -152,8 +152,11 @@
       var url = $site.value
       if (url === null) return
       if (url && url.indexOf('http') != 0) url = 'http://' + url
+      // 手动设值logo
+      if ($logo.value.length > 0) {
+        localStorage[url] = $logo.value
+      }
       localStorage[key] = url
-      console.log(key)
       location.reload()
     }
 
