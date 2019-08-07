@@ -187,4 +187,14 @@
           default:
         }
     }
+    // 获取重定向url手动加背景
+    new Promise(function(resolve, reject) {
+      fetch('https://source.unsplash.com/random/1920*1080')
+      .then(reason => {
+        resolve(reason.url)
+      });
+    }).then(e => {
+      $(".body").css('background-image', 'url(' + e + ')')
+      $("#downloadImage").attr("href", e.split("?")[0])
+    })
 })()
