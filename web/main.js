@@ -16,7 +16,8 @@
         $site = document.querySelector('#site'),
         $logo = document.querySelector('#logo'),
         $urlSet = document.querySelector('#urlSet'),
-        $pureImage = document.querySelector('#pureImage')
+        $pureImage = document.querySelector('#pureImage'),
+        $userImage = document.querySelector('#userImage')
 
     // init
     if (localStorage.version != version) {
@@ -92,6 +93,7 @@
     $search.onkeyup = function(e) {
         if (e.target.value == 'set') {
           $pureImage.value = localStorage["isPureColor"] == "true" ? localStorage["backgroundColor"] : ""
+          $userImage.value = localStorage["userImage"] == "true" ? localStorage["userImageUrl"] : ""
           return $setting.style.bottom = 0
         }
         var key = e.which || e.keyCode || 0;
@@ -128,7 +130,9 @@
             url = localStorage[key]
         keyUp(key)
 
-        if (url && key == keyCache && document.activeElement != $search && !isSetting && document.activeElement != $pureImage) openUrl(url)
+        var isOpen = url && key == keyCache && document.activeElement != $search && !isSetting &&
+        document.activeElement != $pureImage && document.activeElement != $userImage
+        if (isOpen) openUrl(url)
         keyCache = 0
     }
 
@@ -206,12 +210,13 @@
       })
     }
 
-    // 背景或是纯色
-    console.log(localStorage["isPureColor"] == "true")
+    // 背景或是纯色或自定义图片
     if (localStorage["isPureColor"] == "true") {
         $(".body").css('background-color', localStorage["backgroundColor"])
+    } else if (localStorage["userImage"] == "true") {
+        $(".body").css('background-image', 'url(' + localStorage["userImageUrl"] + ')')
     } else {
-        changeImage()
+      changeImage()
     }
 
     // 手动切换背景(暂时关闭使用)
@@ -231,7 +236,19 @@
           localStorage["isPureColor"] = false
           changeImage()
         }
+    })
 
+    // 设置用户自定义背景
+    $("#userImage").blur(function (e) {
+        var userImageUrl = $("#userImage").val()
+        if(userImageUrl.length > 0) {
+          localStorage["userImage"] = true
+          localStorage["userImageUrl"] = userImageUrl
+          $(".body").css('background-image', 'url(' + userImageUrl + ')')
+        } else {
+          localStorage["userImage"] = false
+          changeImage()
+        }
     })
 
 })()
