@@ -14,11 +14,12 @@ body {
   width: 100%;
   height: 100%;
   position: absolute;
-  /* background-image: url("https://source.unsplash.com/random/1920*1080"); */
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
   transform: scale(1.0001);
+  transition: all 2s ease-in;
+  background-color: #3c3c3c;
 }
 
 /*-----------SEARCH-----------*/
@@ -312,7 +313,7 @@ body {
   border-style: inset;
   border-color: initial;
   border-image: initial;
-  border: 0.5px solid;
+  border: 1px solid;
   border-radius:25px;
   text-align: center;
 }
@@ -325,6 +326,15 @@ body {
   position: absolute;
   top: 90%;
   left: 90%;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+#changeImage {
+  position: absolute;
+  top: 90%;
+  left: 85%;
   font-size: 20px;
   font-weight: 600;
   color: white;

@@ -15,8 +15,8 @@
         $key = document.querySelector('#key'),
         $site = document.querySelector('#site'),
         $logo = document.querySelector('#logo'),
-        $urlSet = document.querySelector('#urlSet')
-
+        $urlSet = document.querySelector('#urlSet'),
+        $pureImage = document.querySelector('#pureImage')
 
     // init
     if (localStorage.version != version) {
@@ -90,7 +90,10 @@
     }
 
     $search.onkeyup = function(e) {
-        if (e.target.value == 'set') return $setting.style.bottom = 0
+        if (e.target.value == 'set') {
+          $pureImage.value = localStorage["isPureColor"] == "true" ? localStorage["backgroundColor"] : ""
+          return $setting.style.bottom = 0
+        }
         var key = e.which || e.keyCode || 0;
         if (key == 13) openUrl(localStorage.searchEngine + e.target.value)
     }
@@ -125,7 +128,7 @@
             url = localStorage[key]
         keyUp(key)
 
-        if (url && key == keyCache && document.activeElement != $search && !isSetting) openUrl(url)
+        if (url && key == keyCache && document.activeElement != $search && !isSetting && document.activeElement != $pureImage) openUrl(url)
         keyCache = 0
     }
 
@@ -187,14 +190,48 @@
           default:
         }
     }
+
     // 获取重定向url手动加背景
-    new Promise(function(resolve, reject) {
-      fetch('https://source.unsplash.com/random/1920*1080')
-      .then(reason => {
-        resolve(reason.url)
-      });
-    }).then(e => {
-      $(".body").css('background-image', 'url(' + e + ')')
-      $("#downloadImage").attr("href", e.split("?")[0])
+    function changeImage() {
+      // 设置临时背景色
+      // $(".body").css('background-color', "#90bab5")
+      new Promise(function(resolve, reject) {
+        fetch('https://source.unsplash.com/random/1920*1080')
+        .then(reason => {
+          resolve(reason.url)
+        });
+      }).then(e => {
+        $(".body").css('background-image', 'url(' + e + ')')
+        $("#downloadImage").attr("href", e.split("?")[0])
+      })
+    }
+
+    // 背景或是纯色
+    console.log(localStorage["isPureColor"] == "true")
+    if (localStorage["isPureColor"] == "true") {
+        $(".body").css('background-color', localStorage["backgroundColor"])
+    } else {
+        changeImage()
+    }
+
+    // 手动切换背景(暂时关闭使用)
+    $("#changeImage").click(function () {
+      changeImage()
     })
+
+    // 设置纯色背景
+    $("#pureImage").blur(function (e) {
+        var color = $("#pureImage").val()
+        if(color.length > 0) {
+          localStorage["isPureColor"] = true
+          localStorage["backgroundColor"] = color
+          $(".body").css('background-image', '')
+          $(".body").css('background-color', color)
+        } else {
+          localStorage["isPureColor"] = false
+          changeImage()
+        }
+
+    })
+
 })()

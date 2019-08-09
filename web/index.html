@@ -70,7 +70,8 @@
           </ul>
       </div>
       <!-- <div id="download"> -->
-      <a href="" id="downloadImage" target="_blank"> <p id="download" value="">下载背景</p></a>
+      <a href="" id="downloadImage" target="_blank"> <p id="download" value=""> 下载背景</p></a>
+      <!-- <a href="#"><p id="changeImage">换背景 | </p></a> -->
       <p id="imageDes">image from unsplash.com</p>
       <!-- </div> -->
       <div id="setting">
@@ -91,6 +92,10 @@
                   </td>
               </tr>
               <tr>
+                  <td>纯色背景</td>
+                  <td><input id="pureImage" placeholder="输入颜色十六进制" /></td>
+              </tr>
+              <tr>
                   <td>默认设置</td>
                   <td><input type="button" value="恢复" onclick="localStorage.clear() || location.reload()"></td>
               </tr>
@@ -105,5 +110,14 @@
     </div>
 
     <script src="./main.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131044270-4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-131044270-4');
+    </script>
     </body>
 </html>
